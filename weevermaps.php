@@ -111,7 +111,7 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 
 		}
 
-		$document->addStyleSheet( JPATH_PLUGINS.DS.'content'.DS.'weevermaps'.DS.'static'.DS.'assets'.DS.'css'.DS.'style.css', 'text/css', null, array() );
+		$document->addStyleSheet( $root_url . '/plugins/content/weevermaps/static/assets/css/style.css', 'text/css', null, array() );
 
 		require_once ( JPATH_PLUGINS.DS.'content'.DS.'weevermaps'.DS.'views'.DS.'joomla.box.view.html.php' );
 		require_once ( JPATH_PLUGINS.DS.'content'.DS.'weevermaps'.DS.'static'.DS.'js'.DS.'editor.js.php' );

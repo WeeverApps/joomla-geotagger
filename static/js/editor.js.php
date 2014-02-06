@@ -7,6 +7,7 @@
 $zoom = 16;
 
 	?>
+
 		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 		<script type="text/javascript">
@@ -86,7 +87,7 @@ $zoom = 16;
 				    else if(!hasLocation) {
 
 				    	map.setZoom(1);
-				    	
+
 				    }
 					
 					google.maps.event.addListener(map, 'click', function(event) {
