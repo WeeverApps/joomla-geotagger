@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="2.5" group="content" method="upgrade">
+
+	<name>WEEVERMAPS_PLG_NAME</name>
+	<creationDate>2014-02-05</creationDate>
+	<author>Robert Gerald Porter</author>
+	<authorEmail>rob@weeverapps.com</authorEmail>
+	<authorUrl>http://www.weeverapps.com/</authorUrl>
+	<copyright>(c) 2012 Weever Apps Inc.</copyright>
+	<license>GPLv3</license>
+	<version>1.0</version>
+	<releaseType>Stable</releaseType>
+	<description>WEEVERMAPS_PLG_DESCRIPTION</description>
+
+	<scriptfile>weevermaps.install.php</scriptfile>
+
+	<files>
+
+	<filename plugin="weevermaps">weevermaps.php</filename>
+	<folder>static</folder>
+	<folder>views</folder>
+
+	</files>
+
+	<languages folder="languages">
+
+	<language tag="en-GB">en-GB.plg_content_weevermaps.ini</language>
+	<language tag="en-GB">en-GB.plg_content_weevermaps.sys.ini</language>
+
+	</languages>
+
+</extension>
