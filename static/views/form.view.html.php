@@ -52,7 +52,7 @@
 
 	<div id="kml-settings" class="geotagger-info">
 		<div>KML file address (advanced)</div>
-		<input type="text" id="geolocation-url" name="geolocation-url" placeholder="http://site.com/file.kml" value="<?php echo get_post_meta($post->ID, 'weever_kml', true); ?>" />
+		<input type="text" id="geolocation-url" name="geolocation-url" placeholder="http://site.com/file.kml" value="<?php /*echo get_post_meta($post->ID, 'weever_kml', true); TODO: Cross-platform method for this.*/ ?>" />
 	</div>
 
 	<br>
