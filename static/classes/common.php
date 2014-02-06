@@ -1,11 +1,13 @@
 <?php
 /*	
-*	Weever appBuilder™ for Joomla
-*	(c) 2010-2012 Weever Apps Inc. <http://www.weeverapps.com/>
+*	Geotagger for Joomla
+*	(c) 2012-2014 Weever Apps Inc. <http://www.weeverapps.com/>
 *
-*	Authors: 	Robert Gerald Porter 	<rob@weeverapps.com>
-*				Aaron Song 				<aaron@weeverapps.com>
-*	Version: 	2.0 Beta 4
+*	Authors: 	Robert Gerald Porter <rob@weeverapps.com>
+				Matt Grande <matt@weeverapps.com>
+				Andrew Holden <andrew@weeverapps.com>
+				Aaron Song <aaron@weeverapps.com>
+*	Version: 	1.0
 *   License: 	GPL v3.0
 *
 *   This extension is free software: you can redistribute it and/or modify
