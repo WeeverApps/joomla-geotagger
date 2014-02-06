@@ -24,9 +24,6 @@
 
 defined('_JEXEC') or die;
 
-ini_set( 'error_reporting', E_ALL );
-ini_set('display_errors', 1);
-
 # Joomla 3.0 nonsense
 if( !defined('DS') )
 	define( 'DS', DIRECTORY_SEPARATOR );
