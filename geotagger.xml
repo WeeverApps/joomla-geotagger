@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" version="2.5" group="content" method="upgrade">
 
-	<name>WEEVERMAPS_PLG_NAME</name>
+	<name>GEOTAGGER_PLG_NAME</name>
 	<creationDate>2014-02-06</creationDate>
 	<author>Matt Grande, Robert Gerald Porter, Aaron Song, Andrew Holden</author>
 	<authorEmail>rob@weeverapps.com</authorEmail>
@@ -10,22 +10,23 @@
 	<license>GPLv3</license>
 	<version>1.0</version>
 	<releaseType>Stable</releaseType>
-	<description>WEEVERMAPS_PLG_DESCRIPTION</description>
+	<description>GEOTAGGER_PLG_DESCRIPTION</description>
 
-	<scriptfile>weevermaps.install.php</scriptfile>
+	<scriptfile>geotagger.install.php</scriptfile>
 
 	<files>
 
-	<filename plugin="weevermaps">weevermaps.php</filename>
+	<filename plugin="geotagger">geotagger.php</filename>
 	<folder>static</folder>
 	<folder>views</folder>
+	<folder>assets</folder>
 
 	</files>
 
 	<languages folder="languages">
 
-	<language tag="en-GB">en-GB.plg_content_weevermaps.ini</language>
-	<language tag="en-GB">en-GB.plg_content_weevermaps.sys.ini</language>
+	<language tag="en-GB">en-GB.plg_content_geotagger.ini</language>
+	<language tag="en-GB">en-GB.plg_content_geotagger.sys.ini</language>
 
 	</languages>
 

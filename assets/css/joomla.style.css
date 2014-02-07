@@ -1,1 +1,69 @@
-/*Joomla-specific styles here */
+/*	
+*	Geotagger for Joomla
+*	(c) 2012-2014 Weever Apps Inc. <http://www.weeverapps.com/>
+*
+*	Authors: 	Robert Gerald Porter <rob@weeverapps.com>
+				Matt Grande <matt@weeverapps.com>
+				Andrew Holden <andrew@weeverapps.com>
+				Aaron Song <aaron@weeverapps.com>
+*	Version: 	1.0
+*   License: 	GPL v3.0
+*
+*   This extension is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This extension is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details <http://www.gnu.org/licenses/>.
+*
+*/
+
+/* Joomla 2.5.x */
+
+#geotagger-form .screen-reader-text,
+#geotagger-form #geotagger-about {
+	display: none !important;
+}
+
+#geotagger-form input,
+#geotagger-form textarea,
+#geotagger-form select,
+#geotagger-form img,
+#geotagger-form button {
+	float: none;
+	padding: 5px;
+}
+
+
+#geotagger-form #geotagger-on-off div input,
+#geotagger-form #geotagger-on-off div label {
+	width: auto;
+	min-width: 0;
+	float: left;
+	clear: none;
+}
+
+#geotagger-form label,
+#geotagger-form .faux-label {
+	width: 100%;
+	max-width: 100%;
+}
+
+#geotagger-form #geolocation-address,
+#geotagger-form #geolocation-pin,
+#geotagger-form #geolocation-url {
+	min-width: 240px;
+	max-width: 100%;
+}
+
+#geotagger-form .embed-container {
+	clear: both;
+}
+
+
+.screen-reader-text, #geotagger-about {
+	display: none !important;
+}

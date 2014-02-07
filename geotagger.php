@@ -30,16 +30,19 @@ if( !defined('DS') )
 
 jimport('joomla.plugin.plugin');
 
-require_once ( JPATH_PLUGINS.DS.'content'.DS.'weevermaps'.DS.'static'.DS.'classes'.DS.'common'.'.php' );
+require_once ( JPATH_PLUGINS.DS.'content'.DS.'geotagger'.DS.'static'.DS.'classes'.DS.'common'.'.php' );
 
-class plgContentWeeverMapsIntermed extends JPlugin {
+class plgContentGeotaggerIntermed extends JPlugin {
 
-	public 		$pluginName 				= "weevermaps";
+	public 		$pluginName 				= "geotagger";
 	public 		$pluginNameHumanReadable;
 	public  	$pluginVersion 				= "1.0";
 	public		$pluginLongVersion 			= "Version 1.0 \"Leif Ericson\"";
-	public  	$pluginReleaseDate 			= "November 8, 2012";
+	public  	$pluginReleaseDate 			= "February 7, 2014";
 	public  	$joomlaVersion;
+	public 		$marker_url;
+	public 		$default_marker_url;
+	public 		$kml_url;
 	
 	private		$geoData 					= null;
 	private		$inputString				= array(
@@ -64,14 +67,14 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 		$this->joomlaVersion 	= substr($version->getShortVersion(), 0, 3);
 		
 		// kill this when not in correct context
-		if( !$app->isAdmin() || $option != "com_content" || JRequest::getVar("view") == "category" || JRequest::getVar("view") == "articles" )
+		if( !$app->isAdmin() || $option != "com_content" || ( JRequest::getVar("view") != "article" && !JRequest::getVar("geolocation-pin") ) )
 			return false;
 
 		$settings 	= $this->build_settings();
 		
 		JPlugin::loadLanguage('plg_content_'.$this->pluginName, JPATH_ADMINISTRATOR);
 		
-		$this->pluginNameHumanReadable = JText::_('WEEVERMAPS_PLG_NAME');
+		$this->pluginNameHumanReadable = JText::_('GEOTAGGER_PLG_NAME');
 		
 		if( $id = JRequest::getVar("id") ) {
 
@@ -79,6 +82,20 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 
 			$post_id = $id;
 			//$this->implodeGeoData();
+
+		}
+
+		$this->default_marker_url = $root_url . "/plugins/content/geotagger/assets/images/default-marker.png";
+
+		if( isset($this->geoData[0]) && $this->geoData[0]->marker ) {
+
+			$this->marker_url = $this->geoData[0]->marker;
+
+		} else $this->marker_url = $this->default_marker_url;
+
+		if( isset($this->geoData[0]) && $this->geoData[0]->kml ) {
+
+			$this->kml_url = $this->geoData[0]->kml;
 
 		}
 
@@ -91,9 +108,9 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 
 			$jsFormInsert	= "
 
-				\$j('#wx-geotagger-joomla-panel').appendTo('#content-sliders-".$post_id."' ); 
+				\$j('#geotagger-joomla-panel').appendTo('#content-sliders-".$post_id."' ); 
 
-				\$j('#wx-geotagger-joomla-panel').show();
+				\$j('#geotagger-joomla-panel').show();
 
 			"; 
 
@@ -105,17 +122,40 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 
 				\$j('#geotagger-inner-hide').show();
 
-				\$j('<li><a data-toggle=\"tab\" href=\"#geotagger\">Geotagger</a></li>').appendTo('#myTabTabs');
+				\$j('<li><a data-toggle=\"tab\" href=\"#geotagger\" id=\"geotagger-tab\">Geotagger</a></li>').appendTo('#myTabTabs');
+
+				\$j('#geotagger-tab').on('click', function(event) {
+
+					console.log( \$geotagger );
+
+					setTimeout( function() {
+
+						google.maps.event.trigger( \$geotagger.map,'resize' );
+						\$geotagger.map.setCenter( \$geotagger.center );
+
+					}, 200 );
+
+				});
 
 			";
 
 		}
 
-		$document->addStyleSheet( $root_url . '/plugins/content/weevermaps/static/assets/css/style.css', 'text/css', null, array() );
-		$document->addStyleSheet( $root_url . '/plugins/content/weevermaps/assets/css/joomla.style.css', 'text/css', null, array() );
+		$document->addStyleSheet( $root_url . '/plugins/content/geotagger/static/assets/css/style.css', 'text/css', null, array() );
 
-		require_once ( JPATH_PLUGINS.DS.'content'.DS.'weevermaps'.DS.'views'.DS.'joomla.box.view.html.php' );
-		require_once ( JPATH_PLUGINS.DS.'content'.DS.'weevermaps'.DS.'static'.DS.'js'.DS.'editor.js.php' );
+
+		if( $this->joomlaVersion[0] < 3 ) {
+
+			$document->addStyleSheet( $root_url . '/plugins/content/geotagger/assets/css/joomla.style.css', 'text/css', null, array() );
+
+		} else {
+
+			$document->addStyleSheet( $root_url . '/plugins/content/geotagger/assets/css/joomla.bootstrap.style.css', 'text/css', null, array() );
+
+		}
+
+		require_once ( JPATH_PLUGINS.DS.'content'.DS.'geotagger'.DS.'views'.DS.'joomla.box.view.html.php' );
+		require_once ( JPATH_PLUGINS.DS.'content'.DS.'geotagger'.DS.'static'.DS.'js'.DS.'editor.js.php' );
 		
 
 		parent::__construct( $subject, $config );
@@ -202,6 +242,24 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 	
 		$db->setQuery($query);
 		$db->query();
+
+		if( JRequest::getVar("geolocation-on") == 0 )
+			return;
+
+		if($kml = rtrim( JRequest::getVar("geolocation-url"), $_ds) )	{
+			
+			$query = " 	INSERT  ".
+					"	INTO	#__weever_maps ".
+					"	(component_id, component, kml) ".
+					"	VALUES ('".$data->id."', ".$db->quote($this->_com).", ".$db->quote($kml).")";
+			
+			$db->setQuery($query);
+			$db->query();
+			
+		}
+
+		if( ( $geoLatArray[0] == 0 && $geoLongArray[0] == 0 ) )
+			return; 
 		
 		foreach( (array) $geoLatArray as $k=>$v ) {
 		
@@ -224,17 +282,6 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 		
 		}
 		
-		if($kml = rtrim( JRequest::getVar("geolocation-url"), $_ds) )	{
-			
-			$query = " 	INSERT  ".
-					"	INTO	#__weever_maps ".
-					"	(component_id, component, kml) ".
-					"	VALUES ('".$data->id."', ".$db->quote($this->_com).", ".$db->quote($kml).")";
-			
-			$db->setQuery($query);
-			$db->query();
-			
-		}
 		
 	}
 
@@ -294,16 +341,6 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 
 	}
 
-	function get_js_vars( $post_id ) {
-
-		$js  = "var postLatitude =  '" . esc_js( get_post_meta( $post_id, 'geo_latitude', true ) ) . "';\n";
-		$js .= "var postLongitude =  '" . esc_js(get_post_meta($post_id, 'geo_longitude', true)) . "';\n";
-		$js .= "var public =  '" . esc_js(get_post_meta($post_id, 'geo_public', true)) . "';\n";
-		$js .= "var on =  '" . esc_js(get_post_meta($post_id, 'geo_enabled', true)) . "';\n";
-
-	return $js;
-}
-
 	
 } 
 
@@ -312,13 +349,13 @@ class plgContentWeeverMapsIntermed extends JPlugin {
 /* Stupid trick to make this work in J3.0 and J2.5 */
 
 if (version_compare ( JVERSION, '3.0', '<' )) {
-  class plgContentWeeverMaps extends plgContentWeeverMapsIntermed {
+  class plgContentGeotagger extends plgContentGeotaggerIntermed {
    public function onContentAfterSave($context, &$article, $isNew) {
    $this->onContentAfterSaveIntermed ( $context, $article, $isNew );
   }
 }
 } else {
-  class plgContentWeeverMaps extends plgContentWeeverMapsIntermed {
+  class plgContentGeotagger extends plgContentGeotaggerIntermed {
    public function onContentAfterSave($context, $article, $isNew) {
    $this->onContentAfterSaveIntermed ( $context, $article, $isNew );
   }
