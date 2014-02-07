@@ -23,6 +23,9 @@
 */
 
 
+defined('_JEXEC') or die;
+
+
 if( $this->joomlaVersion[0] < 3 ) :
 
 ?>
