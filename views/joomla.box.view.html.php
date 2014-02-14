@@ -32,7 +32,7 @@ if( $this->joomlaVersion[0] < 3 ) :
 
 <div class="panel" id="geotagger-joomla-panel" style="display:none;">
 
-<h3 class="pane-toggler title"><a href="javascript:void(0);"><span>Geotagger</span></a></h3>
+<h3 class="pane-toggler title"><a href="javascript:void(0);google.maps.event.trigger( $geotagger.map,'resize' );"><span>Geotagger</span></a></h3>
 
 <div id="geotagger-joomla-panel-pane" class="pane-slider content" style="padding-top: 0px; border-top: medium none; padding-bottom: 0px; border-bottom: medium none; overflow: hidden; height: auto;">
 
